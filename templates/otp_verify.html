@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="max-width: 400px; margin: 4rem auto;">
+    <div class="card">
+        <h2 style="margin-top: 0; text-align: center;">Two-Factor Auth</h2>
+        <p style="text-align: center; color: var(--text-secondary); margin-bottom: 2rem;">Enter the verification code
+            from your auth app</p>
+
+        {% if error %}
+        <div
+            style="background: rgba(239, 68, 68, 0.1); color: var(--error); padding: 1rem; border-radius: 0.5rem; margin-bottom: 1.5rem; border: 1px solid var(--error);">
+            {{ error }}
+        </div>
+        {% endif %}
+
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="otp">Authenticator Code</label>
+                <input type="text" name="otp" id="otp" required placeholder="6-digit code" autofocus pattern="\d{6}">
+            </div>
+            <button type="submit" class="btn btn-primary" style="width: 100%;">Verify & Login</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

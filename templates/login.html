@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="max-width: 400px; margin: 4rem auto;">
+    <div class="card">
+        <h2 style="margin-top: 0; text-align: center;">Secure Login</h2>
+        <p style="text-align: center; color: var(--text-secondary); margin-bottom: 2rem;">Access your security dashboard
+        </p>
+
+        {% if error %}
+        <div
+            style="background: rgba(239, 68, 68, 0.1); color: var(--error); padding: 1rem; border-radius: 0.5rem; margin-bottom: 1.5rem; border: 1px solid var(--error);">
+            {{ error }}
+        </div>
+        {% endif %}
+
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" name="username" id="username" required placeholder="Enter username">
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" name="password" id="password" required placeholder="Enter password">
+            </div>
+            <button type="submit" class="btn btn-primary" style="width: 100%;">Continue</button>
+        </form>
+    </div>
+    <div style="text-align: center; margin-top: 1.5rem; color: var(--text-secondary);">
+        Demo: admin / admin123
+    </div>
+</div>
+{% endblock %}

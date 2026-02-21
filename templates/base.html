@@ -1,0 +1,48 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Django SecureOps | Privacy-First Security</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <nav>
+        <div class="logo" style="font-weight: 700; font-size: 1.5rem;">
+            <span style="color: var(--primary);">Secure</span>Ops
+        </div>
+        <div class="nav-links">
+            <a href="{% url 'home' %}"
+                style="margin: 0 1rem; color: var(--text-primary); text-decoration: none;">Home</a>
+            {% if user.is_authenticated %}
+            <a href="{% url 'dashboard' %}"
+                style="margin: 0 1rem; color: var(--text-primary); text-decoration: none;">Dashboard</a>
+            <a href="{% url 'logout' %}" class="btn btn-primary">Logout</a>
+            {% else %}
+            <a href="{% url 'login' %}" class="btn btn-primary">Login</a>
+            {% endif %}
+        </div>
+    </nav>
+    <div class="container">
+        {% if messages %}
+        {% for message in messages %}
+        <div class="padding-1 margin-b-1 border-radius-05
+                    {% if message.tags == 'success' %}bg-success-subtle
+                    {% elif message.tags == 'error' %}bg-error-subtle
+                    {% else %}bg-neutral-subtle{% endif %}">
+            {{ message }}
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% block content %}{% endblock %}
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: django-secureops
+    env: python
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn secure_project.wsgi:application"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
+      - key: DEBUG
+        value: "False"
+      - key: SECRET_KEY
+        generateValue: true

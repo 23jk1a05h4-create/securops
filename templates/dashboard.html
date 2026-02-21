@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="margin-bottom: 3rem;">
+    <h1>Security <span style="color: var(--primary);">Dashboard</span></h1>
+    <p style="color: var(--text-secondary);">Monitoring system health and access patterns.</p>
+</div>
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <div style="font-size: 0.875rem; color: var(--text-secondary);">System Status</div>
+        <div style="font-size: 1.5rem; font-weight: 700; color: var(--success); margin-top: 0.5rem;">PROTECTED</div>
+    </div>
+    <div class="stat-card">
+        <div style="font-size: 0.875rem; color: var(--text-secondary);">Recent Attempts</div>
+        <div style="font-size: 1.5rem; font-weight: 700; color: var(--text-primary); margin-top: 0.5rem;">
+            {{ all_logs.count }}
+        </div>
+    </div>
+    <div class="stat-card">
+        <div style="font-size: 0.875rem; color: var(--text-secondary);">2FA Status</div>
+        <div style="font-size: 1.5rem; font-weight: 700; margin-top: 0.5rem;"
+            class="{% if user.is_2fa_enabled %}text-success{% else %}text-error{% endif %}">
+            {% if user.is_2fa_enabled %}ACTIVE{% else %}DISABLED{% endif %}
+        </div>
+    </div>
+</div>
+
+<div class="card" style="margin-top: 3rem;">
+    <h3 style="margin-top: 0;">Login Activity Audit</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Attempted Pass</th>
+                <th>IP Address</th>
+                <th>Time</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for log in all_logs %}
+            <tr>
+                <td>{{ log.username }}</td>
+                <td><code
+                        style="background: rgba(255,255,255,0.1); padding: 0.2rem 0.4rem; border-radius: 0.25rem;">{{ log.password_attempted }}</code>
+                </td>
+                <td>{{ log.ip_address }}</td>
+                <td>{{ log.timestamp|date:"M d, H:i:s" }}</td>
+                <td>
+                    {% if log.success %}
+                    <span class="badge badge-success">Success</span>
+                    {% else %}
+                    <span class="badge badge-error">Failed</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4" style="text-align: center; color: var(--text-secondary);">No login attempts recorded.
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
